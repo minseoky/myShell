@@ -13,7 +13,7 @@
 int Tokenizer(char *buf, char *token[]){
     //buf 파싱
     int count = 0;
-    char *ptr = strtok(buf, " ");
+    char *ptr = strtok(buf, " ");//공백기준으로 슬라이싱
     token[count++] = ptr;
     while(1){
         ptr = strtok(NULL, " ");
@@ -38,11 +38,11 @@ void Redirection(char path[], char *tokens[], int cursor){//출력리다이렉�
     //path : /bin/ls
     //tokens : ls > list.txt
     pid_t pid;
-    int fd;
+    int fd; //dup2함수를 위한 파일디스크럽터
     int i;
     int n = 0;
-    char *before_tokens[100];
-    char *after_tokens[100];
+    char *before_tokens[100]; //>이전토큰
+    char *after_tokens[100]; //>이후토큰
     memset(before_tokens, 0x00, 100); //buf초기화
     memset(after_tokens, 0x00, 100); //buf초기화
     
@@ -103,11 +103,11 @@ void DoubleRedirection(char path[], char *tokens[], int cursor){//출력리다�
 }
 
 
-void RedirectionIn(char path[], char *tokens[], int cursor){//입력 리다이렉션
+void RedirectionIn(char path[], char *tokens[], int cursor){//입력 리다이렉션<
     //path : /bin/ls
     //tokens : ls < list.txt
     pid_t pid;
-    int fd;
+    int fd;//dup2함수를 위한 파일디스크럽터
     int i;
     int n = 0;
     char *before_tokens[100];
@@ -206,10 +206,10 @@ void Execute(char path[], char *tokens[], int tokencount){
 }
 
 int main(){
-    char buf[MAX_BUF];
-    char path[100] = "/bin/";
-    char *argv[100];
-    int tokencount;
+    char buf[MAX_BUF]; //표준입력으로 받은 내용을 임시저장할 버퍼 선언
+    char path[100] = "/bin/"; //execve()함수 활용을 위한 기본 디렉토리 선언
+    char *argv[100]; //파싱한 문자열을 담을 배열 선언
+    int tokencount; //입력받은 파라미터의 개수를 저장할 변수
     printf("32194579_MINSEOK CHOI\n");
     printf("+::welcome to myShell 1.0::+ \n");
     while(1)
@@ -218,7 +218,7 @@ int main(){
         memset(buf, 0x00, MAX_BUF); //buf초기화
         memset(argv, 0x00, 100);
         memset(path, 0x00, 100);
-        strcpy(path, "/bin/");
+        strcpy(path, "/bin/"); //path 경로 초기화
         fgets(buf, MAX_BUF-1, stdin); //표준입출력에 쓰기
         //사용법 : char* fgets(char* str, int num, FILE* pFile);
         if(strncmp(buf, "exit\n", 5) == 0){
